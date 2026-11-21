@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Compile host
-        run: python -m py_compile pcvr/windows/host.py pcvr/windows/test_host.py
+      - name: Compile PCVR diagnostics
+        run: python -m py_compile pcvr/windows/host.py pcvr/windows/capture_probe.py pcvr/windows/test_host.py pcvr/windows/test_capture_probe.py
       - name: Run tests
         run: python -m unittest discover -s pcvr/windows -p "test_*.py" -v
