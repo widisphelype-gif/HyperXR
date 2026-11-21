@@ -10,8 +10,6 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class VrActivity : Activity() {
     private lateinit var vrView: VrPlaceholderView
@@ -31,10 +29,10 @@ class VrActivity : Activity() {
     }
 
     private fun ensureCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) startTracking()
+        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) startTracking()
         else if (!permissionRequested) {
             permissionRequested = true
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 41)
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), 41)
             vrView.setStatus("Permita a câmera para testar o rastreamento visual")
         }
     }
