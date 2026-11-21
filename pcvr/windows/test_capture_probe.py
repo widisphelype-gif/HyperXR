@@ -1,6 +1,7 @@
 import importlib.util
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 MODULE = Path(__file__).with_name("capture_probe.py")
 SPEC = importlib.util.spec_from_file_location("hyperxr_capture_probe", MODULE)
@@ -14,11 +15,12 @@ class CaptureProbeTests(unittest.TestCase):
         self.assertEqual(command[0], "ffmpeg.exe")
         self.assertIn("gdigrab", command)
         self.assertIn("desktop", command)
-        self.assertIn("1", command)
+        self.assertIn("-frames:v", command)
         self.assertEqual(command[-1], "frame.png")
 
     def test_missing_ffmpeg_is_reported(self):
-        ok, message = PROBE.probe_capture(ffmpeg="")
+        with patch.object(PROBE.shutil, "which", return_value=None):
+            ok, message = PROBE.probe_capture()
         self.assertFalse(ok)
         self.assertIn("FFmpeg was not found", message)
 
