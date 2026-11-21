@@ -54,7 +54,7 @@ class VrActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        if (::vrView.isInitialized && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) startTracking()
+        if (::vrView.isInitialized && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) startTracking()
     }
 
     override fun onPause() {
