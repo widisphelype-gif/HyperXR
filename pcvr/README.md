@@ -7,32 +7,35 @@ This directory starts the PC-to-Android PCVR transport work. It is deliberately 
 - Windows host diagnostic service.
 - TCP control handshake on port 9966.
 - UDP discovery beacon on port 9965 (Wi-Fi).
-- USB transport can use the same TCP protocol through Android USB tethering or an ADB forward; no ADB automation is included yet.
+- USB transport can use the same TCP protocol through Android USB tethering; ADB forwarding is not automated.
 - Detects FFmpeg and reports whether its build advertises NVENC encoders.
-
-## Not implemented yet
-
-- Game capture / SteamVR compositor integration.
-- NVENC video encoding pipeline.
-- Android receiver and stereoscopic renderer.
-- Head-pose return channel and controller input.
-- USB auto-configuration.
-
-Do not treat this milestone as a working PCVR headset. The existing `hybridmagic/` component is for hand-tracking offload and remains separate.
+- Windows desktop-capture probe using FFmpeg's `gdigrab` input. It captures one temporary diagnostic frame and deletes it.
 
 ## Run on Windows 10
 
 1. Install Python 3.11+.
-2. Optional: install an FFmpeg build with NVIDIA NVENC support and add `ffmpeg.exe` to PATH.
-3. Run `python pcvr/windows/host.py`.
-4. Allow private-network access if Windows Firewall asks.
+2. Install FFmpeg and add `ffmpeg.exe` to PATH.
+3. Test desktop capture with `python pcvr/windows/capture_probe.py`.
+4. Start the control/discovery host with `python pcvr/windows/host.py`.
+5. Allow private-network access if Windows Firewall asks.
 
-The host prints its local addresses and waits for a compatible Android client. The client is a future milestone.
+The capture probe only validates that FFmpeg can read the Windows desktop. It does not stream video, capture the SteamVR compositor, or create a VR view.
+
+## Not implemented yet
+
+- Low-latency game/SteamVR compositor capture.
+- NVENC video streaming pipeline and Android decoder.
+- Android receiver and stereoscopic renderer.
+- Head-pose return channel and controller input.
+- USB auto-configuration.
+- SteamVR driver/OpenXR bridge.
+
+Do not treat this milestone as a working PCVR headset. The existing `hybridmagic/` component is for hand-tracking offload and remains separate.
 
 ## Transport choices
 
 - **Wi-Fi:** Android and PC on the same private network; discovery uses UDP broadcast and control uses TCP.
-- **USB:** use Android USB tethering, then connect to the PC's tether-network address; alternatively, a future setup helper can establish an ADB port forward. The wire protocol is identical.
+- **USB:** use Android USB tethering, then connect to the PC's tether-network address. The wire protocol is intended to remain identical.
 
 ## Security
 
