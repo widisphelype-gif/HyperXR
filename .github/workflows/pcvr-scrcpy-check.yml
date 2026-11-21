@@ -1,0 +1,26 @@
+name: Check HyperXR scrcpy bridge
+
+on:
+  push:
+    branches: ["feature/pcvr-wifi-usb-foundation"]
+    paths:
+      - "pcvr/windows/**"
+      - ".github/workflows/pcvr-scrcpy-check.yml"
+  pull_request:
+    paths:
+      - "pcvr/windows/**"
+      - ".github/workflows/pcvr-scrcpy-check.yml"
+  workflow_dispatch:
+
+jobs:
+  python-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile scrcpy bridge
+        run: python -m py_compile pcvr/windows/scrcpy_bridge.py
