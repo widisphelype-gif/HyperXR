@@ -1,0 +1,50 @@
+name: Build HyperXR Android PCVR Link APK
+
+on:
+  push:
+    branches: ["feature/pcvr-wifi-usb-foundation"]
+    paths:
+      - "pcvr-android/**"
+      - "settings.gradle.kts"
+      - "gradle/**"
+      - "gradlew"
+      - "gradlew.bat"
+      - ".github/workflows/pcvr-android-apk.yml"
+  pull_request:
+    paths:
+      - "pcvr-android/**"
+      - "settings.gradle.kts"
+      - "gradle/**"
+      - "gradlew"
+      - "gradlew.bat"
+      - ".github/workflows/pcvr-android-apk.yml"
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools"
+      - name: Install Android platform
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build Android companion APK
+        run: ./gradlew :pcvr-android:assembleDebug --no-daemon
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HyperXR-PCVR-Android-APK
+          path: pcvr-android/build/outputs/apk/debug/pcvr-android-debug.apk
+          if-no-files-found: error
+          retention-days: 14
