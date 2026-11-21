@@ -9,7 +9,6 @@ import android.media.Image
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
-import androidx.core.content.ContextCompat
 import kotlin.math.abs
 
 /** Local-only experimental visual-flow estimate; not an IMU or 6DoF tracker. */
@@ -26,7 +25,7 @@ class CameraMotionTracker(private val context: Context, private val onMotion: (F
 
     fun start() {
         if (running) return
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             onMotion(0f, 0f, "Permissão da câmera necessária"); return
         }
         try {
