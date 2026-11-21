@@ -54,3 +54,18 @@ Do not treat this milestone as a working PCVR headset. The existing `hybridmagic
 ## Security
 
 This prototype binds to all interfaces for LAN discovery. Use only on a trusted private network. Authentication and encryption must be added before use on untrusted networks or the public internet.
+
+
+## Android companion app
+
+A standalone native Android connection app (no Unity) is available in `pcvr-android/`.
+
+Build it with:
+
+```bash
+./gradlew :pcvr-android:assembleDebug
+```
+
+The **Build HyperXR Android PCVR Link APK** GitHub Actions workflow publishes an artifact named `HyperXR-PCVR-Android-APK`. The app discovers UDP beacons on port 9965 and performs the TCP JSON handshake on port 9966. It also supports entering the PC's IPv4 address manually, which is useful with USB tethering.
+
+This is a connection-test app only: it does not yet receive or render a VR video stream.
