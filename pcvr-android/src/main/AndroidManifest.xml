@@ -9,6 +9,7 @@
         android:label="HyperXR PCVR Link"
         android:theme="@android:style/Theme.Material.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".VrActivity" android:exported="false" android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
