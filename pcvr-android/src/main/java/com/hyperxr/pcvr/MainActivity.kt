@@ -23,6 +23,7 @@ class MainActivity : Activity() {
     private lateinit var address: EditText
     private lateinit var discoverButton: Button
     private lateinit var connectButton: Button
+    private lateinit var vrButton: Button
     @Volatile private var discoveredHost: String? = null
     private var multicastLock: WifiManager.MulticastLock? = null
 
@@ -80,6 +81,7 @@ class MainActivity : Activity() {
             setBackgroundColor(0xFF263449.toInt())
         }
         connectButton = makeButton("Conectar ao PC") { connectToHost() }
+        vrButton = makeButton("Abrir visualização VR Box") { startActivity(android.content.Intent(this, VrActivity::class.java)) }.apply { isEnabled = false }
         val note = TextView(this).apply {
             text = "Esta versão testa descoberta e handshake de rede. A transmissão de vídeo VR e a integração SteamVR ainda estão em desenvolvimento."
             textSize = 13f
@@ -94,6 +96,7 @@ class MainActivity : Activity() {
         content.addView(manual)
         content.addView(address, matchParams(56))
         content.addView(connectButton, matchParams())
+        content.addView(vrButton, matchParams())
         content.addView(note)
         scroll.addView(content)
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
@@ -185,11 +188,12 @@ class MainActivity : Activity() {
                     val encoding = json.optJSONObject("encoding")
                     val ffmpeg = encoding?.optBoolean("ffmpeg", false) == true
                     val nvenc = encoding?.optBoolean("h264_nvenc", false) == true
+                    runOnUiThread { vrButton.isEnabled = true }
                     setStatus(
                         "Conectado ao PC: ${json.optString("host", host)}\n" +
                         "Transporte: handshake confirmado\n" +
                         "FFmpeg: ${if (ffmpeg) "detectado" else "não detectado"} · NVIDIA NVENC: ${if (nvenc) "disponível" else "não detectado"}\n" +
-                        "Vídeo VR: ainda não implementado."
+                        "Handshake OK. O modo VR abre em tela dividida, aguardando o vídeo que ainda será implementado."
                     )
                 }
             } catch (e: Exception) {
