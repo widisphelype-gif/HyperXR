@@ -24,3 +24,10 @@ APK: `pcvr-android/build/outputs/apk/debug/pcvr-android-debug.apk`
 4. For USB tethering, enable USB tethering on Android and enter the PC's tethering-side IPv4 address manually if broadcast discovery does not cross that interface.
 
 This milestone confirms network discovery and control handshake only. Video streaming, headset rendering, tracking transport and SteamVR/OpenXR PC runtime integration are not implemented yet.
+
+
+## VR Box viewer milestone
+
+After a successful host handshake, the app enables **Abrir visualização VR Box**. This opens an immersive landscape viewer with two side-by-side eye panels (SBS layout) and touch-drag manual view adjustment. It is currently a visual shell that displays a waiting-for-video message; it does not yet decode a PC stream. Since some phones lack a gyroscope, this milestone uses touch input rather than head-orientation sensors.
+
+For a usable PCVR experience, the next required milestone is implementing PC-side game capture/encoding and a low-latency stream receiver/decoder in this Android app, followed by stereo frame rendering and proper head tracking.
